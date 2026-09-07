@@ -1,0 +1,33 @@
+const express = require("express");
+const router = express.Router();
+const { RtcTokenBuilder, RtcRole } = require("agora-access-token");
+
+router.post("/token", (req, res) => {
+  const { nomCanal, uidNumerique, role } = req.body;
+  if (!nomCanal || !uidNumerique) {
+    return res.status(400).json({ erreur: "nomCanal et uidNumerique sont requis." });
+  }
+
+  const appId = process.env.AGORA_APP_ID;
+  const appCertificate = process.env.AGORA_APP_CERTIFICATE;
+  if (!appId || !appCertificate) {
+    return res.status(500).json({ erreur: "Configuration Agora manquante cote serveur." });
+  }
+
+  const roleAgora = role === "spectateur" ? RtcRole.SUBSCRIBER : RtcRole.PUBLISHER;
+  const dureeValiditeSecondes = 3600;
+  const heureExpiration = Math.floor(Date.now() / 1000) + dureeValiditeSecondes;
+
+  const token = RtcTokenBuilder.buildTokenWithUid(
+    appId,
+    appCertificate,
+    nomCanal,
+    uidNumerique,
+    roleAgora,
+    heureExpiration
+  );
+
+  res.json({ token, appId, nomCanal, expireLe: heureExpiration });
+});
+
+module.exports = router;
