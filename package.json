@@ -1,0 +1,21 @@
+{
+  "name": "afrilingua-backend",
+  "version": "1.0.0",
+  "description": "Serveur AfriLingua : verification des paiements Flutterwave, generation de tokens Agora, portefeuille de pieces securise (Firebase Admin).",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "axios": "^1.7.2",
+    "firebase-admin": "^12.1.0",
+    "agora-access-token": "^2.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
